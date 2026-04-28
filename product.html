@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title id="page-title">Produs – WowTeck</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="ann-bar"><div class="ann-track"><div class="ann-item"><i class="fas fa-certificate"></i><span><strong>Licențe 100% Originale</strong></span></div><div class="ann-item"><i class="fas fa-truck"></i><span><strong>Livrare Curier 24/48h</strong></span></div><div class="ann-item"><i class="fas fa-headset"></i><span><strong>Suport Tehnic 24/7</strong></span></div><div class="ann-item"><i class="fas fa-tag"></i><span><strong>Prețuri Garantate</strong></span></div><div class="ann-item"><i class="fas fa-rotate-right"></i><span><strong>Garanție 12 Luni</strong></span></div><div class="ann-item"><i class="fas fa-certificate"></i><span><strong>Licențe 100% Originale</strong></span></div><div class="ann-item"><i class="fas fa-truck"></i><span><strong>Livrare Curier 24/48h</strong></span></div><div class="ann-item"><i class="fas fa-headset"></i><span><strong>Suport Tehnic 24/7</strong></span></div><div class="ann-item"><i class="fas fa-tag"></i><span><strong>Prețuri Garantate</strong></span></div><div class="ann-item"><i class="fas fa-rotate-right"></i><span><strong>Garanție 12 Luni</strong></span></div></div></div>
+<header class="site-header"><div class="container"><div class="header-inner"><a href="/" class="logo"><span>Wow</span>Teck</a><nav class="site-nav"><a class="nav-link" href="/">Acasă</a><a class="nav-link" href="/collections/windows">Windows</a><a class="nav-link" href="/collections/office">Office</a></nav><div class="header-actions"><button class="icon-btn" data-cart-open><i class="fas fa-shopping-cart"></i><span class="cart-badge" style="display:none;">0</span></button><button class="mobile-menu-btn"><span></span><span></span><span></span></button></div></div></div></header>
+<nav class="mobile-nav"><a class="mobile-nav-link" href="/">Acasă</a><a class="mobile-nav-link" href="/collections/windows">Windows</a><a class="mobile-nav-link" href="/collections/office">Office</a></nav>
+<div class="cart-overlay" id="cart-overlay"></div>
+<div class="cart-drawer" id="cart-drawer"><div class="cart-drawer-head"><div class="cart-drawer-title"><i class="fas fa-shopping-cart"></i> Coșul meu <span class="cart-badge" style="display:none;">0</span></div><button onclick="cartCloseDrawer()" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;color:#666;"><i class="fas fa-xmark"></i></button></div><div class="cart-drawer-body" id="cart-drawer-body"></div><div class="cart-drawer-footer" id="cart-drawer-footer" style="display:none;"><div class="cart-subtotal-row"><span class="cart-subtotal-label">Total</span><span class="cart-subtotal-amount" id="cart-total-amount">0 Lei</span></div><a href="/cart.html" class="btn btn-ghost btn-full" style="margin-bottom:.75rem;">Vezi coșul</a><a href="/checkout.html" class="btn btn-primary btn-full btn-lg"><i class="fas fa-lock"></i> Finalizează comanda</a></div></div>
+
+<div id="prd-root"></div>
+
+<footer class="site-footer" style="margin-top:0;"><div class="container"><div class="footer-bottom"><div class="footer-copy">&copy; 2025 <strong>WowTeck</strong>. Toate drepturile rezervate.</div><nav class="footer-legal"><a href="#">Confidențialitate</a><a href="#">Termeni</a><a href="#">Contact</a></nav></div></div></footer>
+
+<script src="/js/data.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/main.js"></script>
+<script>
+const slug = new URLSearchParams(location.search).get('slug') || location.pathname.split('/').pop();
+const p = getProduct(slug);
+if (!p) { document.getElementById('prd-root').innerHTML = '<div style="text-align:center;padding:8rem 2rem;"><h2>Produsul nu a fost găsit</h2><a href="/" class="btn btn-primary" style="margin-top:2rem;">Înapoi acasă</a></div>'; } else {
+  document.title = `${p.title} – WowTeck`;
+  document.getElementById('page-title').textContent = `${p.title} – WowTeck`;
+  const sv = savings(p);
+  let qty = 1;
+  document.getElementById('prd-root').innerHTML = `
+  <div class="prd-page">
+   <div class="container">
+    <div class="breadcrumb"><a class="bc-link" href="/">Acasă</a><span class="bc-sep">›</span><a class="bc-link" href="/collections/${p.type}">${p.type==='windows'?'Windows':'Microsoft Office'}</a><span class="bc-sep">›</span><span style="color:#b0b0b0;">${p.title}</span></div>
+    <div class="prd-page-grid">
+     <div class="prd-gal">
+      <div class="prd-gal-main"><div class="prd-gal-emoji">${p.emoji}</div><div class="prd-gal-badge-wrap"><span class="badge" style="background:#e31e24;color:#fff;font-size:.7rem;">-${sv}%</span><span class="badge badge-yellow" style="font-size:.7rem;">RETAIL</span></div></div>
+     </div>
+     <div class="prd-info">
+      <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">
+        <div class="prd-status" style="background:rgba(34,197,94,.1);color:#22c55e;border:1px solid rgba(34,197,94,.25);"><div class="prd-status-dot"></div>În stoc</div>
+        <span class="badge badge-red"><i class="fas fa-certificate"></i> Original Microsoft</span>
+        <span class="badge badge-red"><i class="fas fa-desktop"></i> 1 PC</span>
+      </div>
+      <h1 class="prd-title">${p.title}</h1>
+      <div class="prd-rating-row"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i><span style="font-weight:700;font-size:.88rem;">4.9</span><a onclick="openTab('reviews',document.querySelector('[data-tab=reviews]'))" style="font-size:.82rem;color:#e31e24;text-decoration:underline;cursor:pointer;">128 recenzii</a><span style="color:#242424;">|</span><span style="font-size:.78rem;color:#666;"><i class="fas fa-fire" style="color:#f97316;"></i> 342 vândute</span></div>
+      <div class="prd-price-box"><div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.35rem;"><span class="prd-price-now">${formatPrice(p.price)}</span><span class="prd-price-old">${formatPrice(p.compare)}</span><span class="badge badge-green">Economisești ${formatPrice(p.compare-p.price)}</span></div><div style="font-size:.78rem;color:#666;">Față de prețul oficial <strong>${formatPrice(p.compare)}</strong></div></div>
+      <div class="prd-cd"><i class="fas fa-clock"></i><span>Ofertă expiră în:</span><div class="prd-cd-timer"><div class="prd-cd-u"><span id="cd-h">02</span><small>ore</small></div><span class="prd-cd-sep">:</span><div class="prd-cd-u"><span id="cd-m">47</span><small>min</small></div><span class="prd-cd-sep">:</span><div class="prd-cd-u"><span id="cd-s">33</span><small>sec</small></div></div></div>
+      <div class="prd-proof"><div class="prd-proof-dot"></div><span id="prd-viewers">12</span> persoane văd acest produs acum</div>
+      <div class="prd-buy-row">
+        <div class="prd-qty"><button class="prd-qty-btn" onclick="document.getElementById('prd-qty').value=Math.max(1,parseInt(document.getElementById('prd-qty').value||1)-1);qty=parseInt(document.getElementById('prd-qty').value)">−</button><input class="prd-qty-inp" type="number" id="prd-qty" value="1" min="1" max="99"><button class="prd-qty-btn" onclick="document.getElementById('prd-qty').value=Math.min(99,parseInt(document.getElementById('prd-qty').value||1)+1);qty=parseInt(document.getElementById('prd-qty').value)">+</button></div>
+        <button class="prd-add-btn" id="add-btn" onclick="doAdd()"><i class="fas fa-shopping-cart"></i> Adaugă în coș</button>
+      </div>
+      <button class="prd-buy-now" onclick="location.href='/checkout.html?slug=${p.slug}'"><i class="fas fa-bolt"></i> Cumpără Acum – Livrare 24/48h</button>
+      <div class="prd-trust-grid">
+        <div class="prd-trust-item"><i class="fas fa-certificate"></i><div><strong>100% Original</strong><span>Retail Microsoft</span></div></div>
+        <div class="prd-trust-item"><i class="fas fa-truck"></i><div><strong>Curier 24/48h</strong><span>Pe teritoriul RO</span></div></div>
+        <div class="prd-trust-item"><i class="fas fa-rotate-right"></i><div><strong>Garanție 12 luni</strong><span>Sau banii înapoi</span></div></div>
+        <div class="prd-trust-item"><i class="fas fa-headset"></i><div><strong>Suport 24/7</strong><span>Asistență activare</span></div></div>
+      </div>
+      <div class="prd-del"><div class="prd-del-head"><i class="fas fa-truck-fast"></i> Informații livrare</div><div class="prd-del-body"><div class="prd-del-row"><i class="fas fa-map-marker-alt"></i><span>Curier rapid pe <strong>teritoriul României</strong></span></div><div class="prd-del-row"><i class="fas fa-clock"></i><span>Expediere în <strong>aceeași zi</strong> (până la 15:00)</span></div><div class="prd-del-row"><i class="fas fa-calendar-check"></i><span>Livrare estimată: <strong>24–48 ore lucrătoare</strong></span></div><div class="prd-del-row"><i class="fas fa-file-invoice"></i><span>Factură fiscală inclusă în colet</span></div></div></div>
+      <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;"><span style="font-size:.78rem;color:#666;">Etichete:</span>${p.tags.map(t=>`<span class="badge badge-dark" style="font-size:.68rem;">${t.replace(/-/g,' ')}</span>`).join('')}</div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="tabs-section">
+   <div class="container">
+    <div class="tabs-nav">
+      <button class="tab-btn on" data-tab="desc" onclick="openTab('desc',this)"><i class="fas fa-align-left"></i> Descriere</button>
+      <button class="tab-btn" data-tab="specs" onclick="openTab('specs',this)"><i class="fas fa-microchip"></i> Specificații</button>
+      <button class="tab-btn" data-tab="ship" onclick="openTab('ship',this)"><i class="fas fa-truck"></i> Livrare & Garanție</button>
+      <button class="tab-btn" data-tab="reviews" onclick="openTab('reviews',this)"><i class="fas fa-star"></i> Recenzii <span class="tab-badge">128</span></button>
+    </div>
+    <div class="tab-panel on" id="tab-desc"><div class="tab-desc">${p.description}</div></div>
+    <div class="tab-panel" id="tab-specs">
+      <div class="specs-cards">
+        <div class="spec-card"><i class="fas fa-tag"></i><div class="spec-lbl">Tip licență</div><div class="spec-val">Retail</div></div>
+        <div class="spec-card"><i class="fas fa-desktop"></i><div class="spec-lbl">Dispozitive</div><div class="spec-val">1 PC</div></div>
+        <div class="spec-card"><i class="fas fa-rotate-right"></i><div class="spec-lbl">Transferabilă</div><div class="spec-val">Da, nelimitat</div></div>
+        <div class="spec-card"><i class="fas fa-infinity"></i><div class="spec-lbl">Valabilitate</div><div class="spec-val">Pe viață</div></div>
+        <div class="spec-card"><i class="fas fa-building"></i><div class="spec-lbl">Producător</div><div class="spec-val">Microsoft</div></div>
+        <div class="spec-card"><i class="fas fa-language"></i><div class="spec-lbl">Limbă</div><div class="spec-val">Multi-language</div></div>
+      </div>
+      <div class="specs-tbl">${Object.entries(p.specs).map(([k,v])=>`<div class="specs-row"><span class="specs-key"><i class="fas fa-circle-dot"></i>${k}</span><span class="specs-val">${v}</span></div>`).join('')}</div>
+    </div>
+    <div class="tab-panel" id="tab-ship">
+      <div class="ship-grid">
+        <div class="ship-card"><i class="fas fa-truck-fast icon"></i><h3>Livrare prin Curier</h3><ul><li><i class="fas fa-check"></i>Expediere în aceeași zi (până la 15:00)</li><li><i class="fas fa-check"></i>Livrare 24–48 ore pe teritoriul României</li><li><i class="fas fa-check"></i>Tracking online colet</li><li><i class="fas fa-check"></i>Ambalaj securizat</li></ul></div>
+        <div class="ship-card"><i class="fas fa-box-open icon"></i><h3>Ce Primești</h3><ul><li><i class="fas fa-check"></i>Cutie originală Microsoft sigilată</li><li><i class="fas fa-check"></i>Card cu cheie de produs (25 caractere)</li><li><i class="fas fa-check"></i>Instrucțiuni activare incluse</li><li><i class="fas fa-check"></i>Factură fiscală în colet</li></ul></div>
+        <div class="ship-card"><i class="fas fa-shield-halved icon"></i><h3>Garanție 12 Luni</h3><ul><li><i class="fas fa-check"></i>Garanție completă 12 luni</li><li><i class="fas fa-check"></i>Înlocuire gratuită dacă nu funcționează</li><li><i class="fas fa-check"></i>Retur 30 de zile fără întrebări</li><li><i class="fas fa-check"></i>Rambursare integrală garantată</li></ul></div>
+        <div class="ship-card"><i class="fas fa-headset icon"></i><h3>Suport Tehnic 24/7</h3><ul><li><i class="fas fa-check"></i>Asistență activare pas cu pas</li><li><i class="fas fa-check"></i>Suport telefon, email, chat</li><li><i class="fas fa-check"></i>Răspuns mediu: 15 minute</li><li><i class="fas fa-check"></i>Echipă tehnică certificată</li></ul></div>
+      </div>
+      <div class="steps-box"><h3>Cum activezi – 4 pași simpli</h3><div class="steps-row"><div class="step"><div class="step-num">1</div><div class="step-title">Primești coletul</div><div class="step-txt">Curier 24–48h cu cutia originală</div></div><div class="step"><div class="step-num">2</div><div class="step-title">Deschizi Settings</div><div class="step-txt">System → Activation → Change key</div></div><div class="step"><div class="step-num">3</div><div class="step-title">Introduci cheia</div><div class="step-txt">25 caractere de pe card</div></div><div class="step"><div class="step-num">4</div><div class="step-title">Activ!</div><div class="step-txt">Activat în câteva secunde</div></div></div></div>
+    </div>
+    <div class="tab-panel" id="tab-reviews">
+      <div class="rev-summary"><div class="rev-big"><div class="rev-big-num">4.9</div><div class="rev-big-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i></div><div class="rev-big-count">Din 128 recenzii</div></div><div class="rev-bars"><div class="rev-bar-row"><span class="rev-bar-lbl">5 ⭐</span><div class="rev-bar-track"><div class="rev-bar-fill" data-w="80"></div></div><span class="rev-bar-pct">80%</span></div><div class="rev-bar-row"><span class="rev-bar-lbl">4 ⭐</span><div class="rev-bar-track"><div class="rev-bar-fill" data-w="14"></div></div><span class="rev-bar-pct">14%</span></div><div class="rev-bar-row"><span class="rev-bar-lbl">3 ⭐</span><div class="rev-bar-track"><div class="rev-bar-fill" data-w="4"></div></div><span class="rev-bar-pct">4%</span></div><div class="rev-bar-row"><span class="rev-bar-lbl">2 ⭐</span><div class="rev-bar-track"><div class="rev-bar-fill" data-w="1"></div></div><span class="rev-bar-pct">1%</span></div><div class="rev-bar-row"><span class="rev-bar-lbl">1 ⭐</span><div class="rev-bar-track"><div class="rev-bar-fill" data-w="1"></div></div><span class="rev-bar-pct">1%</span></div></div></div>
+      <div class="rev-grid">
+        <div class="rev-card"><div class="rev-head"><div class="rev-author"><div class="rev-avatar">A</div><div><div class="rev-name">Alexandru M.</div><div class="rev-date">Acum 3 zile</div></div></div><div class="rev-ok"><i class="fas fa-check-circle"></i> Verificat</div></div><div class="rev-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="rev-txt">Livrare rapidă, cutie originală sigilată. Activare reușită din prima. Recomand cu toată încrederea!</p></div>
+        <div class="rev-card"><div class="rev-head"><div class="rev-author"><div class="rev-avatar">M</div><div><div class="rev-name">Maria D.</div><div class="rev-date">Acum o săptămână</div></div></div><div class="rev-ok"><i class="fas fa-check-circle"></i> Verificat</div></div><div class="rev-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="rev-txt">Prețuri excelente față de magazinele mari. Licența 100% originală, funcționează perfect!</p></div>
+        <div class="rev-card"><div class="rev-head"><div class="rev-author"><div class="rev-avatar">R</div><div><div class="rev-name">Radu C.</div><div class="rev-date">Acum 2 săptămâni</div></div></div><div class="rev-ok"><i class="fas fa-check-circle"></i> Verificat</div></div><div class="rev-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div><p class="rev-txt">Suportul tehnic a răspuns imediat și m-a ajutat cu activarea. Serviciu profesional!</p></div>
+      </div>
+      <div class="rev-form"><h3><i class="fas fa-pencil"></i> Lasă o recenzie</h3><div class="form-row"><div class="form-group" style="margin-bottom:0;"><label class="form-label">Numele tău *</label><input class="form-input" type="text" placeholder="Alexandru M." required></div><div class="form-group" style="margin-bottom:0;"><label class="form-label">Email *</label><input class="form-input" type="email" placeholder="email@exemplu.ro" required></div></div><div class="form-group"><label class="form-label">Rating *</label><div class="star-inp" id="star-inp"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></div></div><div class="form-group"><label class="form-label">Recenzia ta *</label><textarea class="form-input" rows="4" placeholder="Descrie experiența ta..." required style="min-height:110px;"></textarea></div><button class="btn btn-primary" onclick="cartShowToast('Recenzia ta a fost trimisă, mulțumim!');this.textContent='✓ Trimis!';this.disabled=true;"><i class="fas fa-paper-plane"></i> Trimite recenzia</button></div>
+    </div>
+   </div>
+  </div>
+
+  <div style="padding:4rem 0;background:var(--bg);border-top:1px solid var(--border);">
+   <div class="container">
+    <h2 style="font-size:1.4rem;margin-bottom:2rem;">Produse similare</h2>
+    <div class="products-grid" id="related-grid"></div>
+   </div>
+  </div>`;
+
+  // Related
+  const related = PRODUCTS.filter(x=>x.type===p.type&&x.slug!==p.slug).slice(0,4);
+  document.getElementById('related-grid').innerHTML = related.map(r=>`<div class="pcard"><div class="pcard-media"><div class="pcard-emoji">${r.emoji}</div><div class="pcard-badges"><span class="badge" style="background:#e31e24;color:#fff;font-size:.68rem;">-${savings(r)}%</span></div></div><div class="pcard-body"><div class="pcard-type">${r.version}</div><div class="pcard-title"><a href="/products/${r.slug}">${r.title}</a></div><div class="pcard-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i><span>(4.9)</span></div><div class="pcard-price"><span class="pcard-price-now">${formatPrice(r.price)}</span><span class="pcard-price-old">${formatPrice(r.compare)}</span></div></div><div class="pcard-footer"><button class="btn btn-primary btn-full btn-sm" onclick="cartAdd('${r.slug}')"><i class="fas fa-shopping-cart"></i> Adaugă în coș</button></div></div>`).join('');
+
+  // Countdown
+  startCountdown(document.getElementById('cd-h'),document.getElementById('cd-m'),document.getElementById('cd-s'),2*3600+47*60+33);
+  startViewerCount('prd-viewers',12);
+
+  // Star input
+  document.querySelectorAll('#star-inp i').forEach((s,i,all)=>{
+    s.addEventListener('click',()=>all.forEach((x,j)=>x.className=j<=i?'fas fa-star on':'far fa-star'));
+    s.addEventListener('mouseover',()=>all.forEach((x,j)=>x.classList.toggle('on',j<=i)));
+    s.addEventListener('mouseout',()=>{const c=[...all].filter(x=>x.classList.contains('fas')).length-1;all.forEach((x,j)=>x.classList.toggle('on',j<=c));});
+  });
+}
+
+function doAdd(){
+  qty=parseInt(document.getElementById('prd-qty')?.value||1);
+  const btn=document.getElementById('add-btn');
+  if(btn){btn.disabled=true;btn.innerHTML='<div class="spinner"></div>';}
+  setTimeout(()=>{cartAdd(slug,qty);if(btn){btn.disabled=false;btn.innerHTML='<i class="fas fa-shopping-cart"></i> Adaugă în coș';}},300);
+}
+
+function openTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+id)?.classList.add('on');
+  if(btn)btn.classList.add('on');
+  if(id==='reviews'){document.querySelectorAll('.rev-bar-fill').forEach(b=>{b.style.width=b.dataset.w+'%';});}
+  document.querySelector('.tabs-section')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>
